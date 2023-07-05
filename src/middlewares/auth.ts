@@ -15,12 +15,12 @@ export async function auth(req: Request, res: Response, next: NextFunction) {
     if (!idToken || typeof idToken !== "string") {
       res.status(401).send("Un Authorized")
     } else {
-      // The token for use to authenticate between services in GCP
-      const token = env === "development" ? "" : await authClient.getIdToken()
-
       // Call the Wallet Service to verify id token
       const baseURL =
         env === "development" ? "http://localhost:8000" : WALLET_SERVICE_URL!
+      // The token for use to authenticate between services in GCP
+      const token =
+        env === "development" ? "" : await authClient.getIdToken(baseURL)
       await axios({
         method: "GET",
         url: `${baseURL}/auth/verify`,

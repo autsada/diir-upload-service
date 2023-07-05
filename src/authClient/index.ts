@@ -1,7 +1,5 @@
 import { GoogleAuth } from "google-auth-library"
 
-const { KMS_BASE_URL } = process.env
-
 class AuthClient {
   private auth: GoogleAuth
 
@@ -9,8 +7,8 @@ class AuthClient {
     this.auth = new GoogleAuth()
   }
 
-  async getIdToken() {
-    const client = await this.auth.getIdTokenClient(KMS_BASE_URL!)
+  async getIdToken(serviceURL: string) {
+    const client = await this.auth.getIdTokenClient(serviceURL)
     const headers = await client.getRequestHeaders()
 
     return headers ? headers["Authorization"] : ""
